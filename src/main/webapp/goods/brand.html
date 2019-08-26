@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>品牌管理</title>
+    <link rel="stylesheet" href="../css/elementui.css">
+</head>
+<body>
+<div id="app">
+    <!--表单-->
+    <!--设置 inline 属性可以让表单域变为行内的表单域-->
+    <!--输入框站位文本 :placeholder -->
+    <el-form :inline="true">
+        <el-form-item label="品牌名称">
+            <el-input placeholder="品牌名称" v-model="search.name"></el-input>
+        </el-form-item>
+
+        <el-form-item label="品牌首字母">
+            <el-input placeholder="品牌首字母" v-model="search.letter"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="fetchData">查询</el-button>
+    </el-form>
+
+
+    <el-table
+            :data="tableData"
+            border
+            style="width: 100%">
+        <el-table-column
+                prop="id"
+                label="ID"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="name"
+                label="名称">
+        </el-table-column>
+        <el-table-column
+                prop="letter"
+                label="首字母"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                label="图片"
+                width="180">
+            <!--            模板页-->
+            <template slot-scope="scope">
+                <img :src="scope.row.image">
+            </template>
+        </el-table-column>
+    </el-table>
+    <!--    分页-->
+    <el-pagination
+            @size-change="fetchData"
+            @current-change="fetchData"
+            :current-page.sync="currentPage"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="totalCount">
+    </el-pagination>
+</div>
+
+
+</body>
+
+<script src="../js/vue.js"></script>
+<script src="../js/elementui.js"></script>
+<script src="../js/axios.js"></script>
+
+<script>
+
+
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                tableData: [],
+                currentPage: 1,
+                size: 10,
+                // 查询变量
+                search: {},
+            }
+        },
+        created() {
+            //页面加载调用这个方法
+            this.fetchData();
+        },
+        methods: {
+            fetchData() {
+
+                axios.post('/brand/getBrandByCondition', {
+
+                        page: {
+                            currentPage: this.currentPage,// 当前页
+                            pageSize: this.size,// 每页大小
+                            orderBy: "id desc",
+                        },
+                        search: this.search
+
+
+                }).then(response => {
+                    this.tableData = response.data.list;
+                    this.totalCount = response.data.page.totalCount;
+                })
+            }
+        }
+    })
+
+
+</script>
+</html>

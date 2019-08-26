@@ -1,0 +1,34 @@
+server:
+  port: 10010
+spring:
+
+  # dubbo的配置
+  dubbo:
+    # dubbo中的服务名称
+    application: manage-web
+    protocol:
+      # dubbo的通讯协议名称
+      name: dubbo
+    registry:
+      # zookeeper注册中心的地址
+      address: 192.168.182.129:2181
+      # zookeeper的通讯协议的名称
+      protocol: zookeeper
+      # dubbo的服务的扫描路径
+    base-package: com.qc
+    consumer:
+      # 设置超时时间
+      timeout: 600000
+      # 是否检查服务存在
+      consumer: false
+
+
+
+
+##日志级别
+#logging:
+#  level:
+#    root=debug: info
+
+
+
