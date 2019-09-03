@@ -28,6 +28,7 @@ public class BrandController {
 
     @RequestMapping("getAllBrandByPage")
     BaseQueryResult<Brand> getAllBrandByPage(PageInfo page) {
+        //哈哈哈哈
         return brandService.getAllBrandByPage(page);
     }
 
