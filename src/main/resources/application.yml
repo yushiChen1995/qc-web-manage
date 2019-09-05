@@ -1,7 +1,10 @@
 server:
   port: 10010
 spring:
-
+  http:
+    multipart:
+      maxFileSize: 100Mb #解决上传文件过大
+      maxRequestSize: 1000Mb
   # dubbo的配置
   dubbo:
     # dubbo中的服务名称
@@ -30,5 +33,11 @@ spring:
 #  level:
 #    root=debug: info
 
-
-
+# OSS相关配制
+oss:
+  file:
+    endpoint: http://oss-cn-hangzhou.aliyuncs.com # 阿里云内网或者外网的访问地址
+    accessKeyId: LTAIoYnHqdqWr77t # 阿里云控制台获取
+    accessKeySecret: iqo7OrXUqEJ6PbzVyC00BAPuMTtVi4 # 阿里云控制台获取
+    bucketname: qc-chenyushi #自己定义的块儿名称
+   # filehost: blog: # 自己定义的路径名称
