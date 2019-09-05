@@ -1,4 +1,4 @@
-package com.qc.brand.controller;
+package com.qc.goods.controller.goods;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.qc.common.BaseQueryResult;

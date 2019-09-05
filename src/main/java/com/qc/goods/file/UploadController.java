@@ -1,7 +1,6 @@
-package com.qc.brand.file;
+package com.qc.goods.file;
 
 import com.aliyun.oss.OSSClient;
-import lombok.experimental.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
