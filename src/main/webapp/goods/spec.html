@@ -157,24 +157,31 @@
         },
         methods:{
             fetchData (){
-                axios.post(`/spec/findPage.do?page=${this.currentPage}&size=${this.size}`,this.searchMap).then(response => {
-                    this.tableData = response.data.rows;
-                    this.total = response.data.total;
+                axios.post(`/spec/findSpec`,{
+                    page: {
+                        currentPage: this.currentPage,// 当前页
+                        pageSize: this.size,// 每页大小
+                    },
+                    searchMap: this.searchMap
+
+                }).then(response => {
+                    this.tableData =  response.data.result.list;
+                    this.total = response.data.result.page.totalCount;
                 });
             },
             save (){
                 // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
-                this.pojo.options= this.pojo.options.replace( /\n/g,","  )
+                this.pojo.options = this.pojo.options.replace(/\n/g, ",");
                 axios.post(`/spec/${this.pojo.id==null?'add':'update'}.do`,this.pojo).then(response => {
                     this.fetchData (); //刷新列表
                     this.formVisible = false ;//关闭窗口
                 });
             },
             edit (id){
-                this.formVisible = true // 打开窗口
+                this.formVisible = true; // 打开窗口
                 // 调用查询
-                axios.get(`/spec/findById.do?id=${id}`).then(response => {
-                    this.pojo = response.data;
+                axios.get(`/spec/findSpecById?id=${id}`).then(response => {
+                    this.pojo = response.data.result;
                     // this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
                     this.pojo.options =  this.pojo.options.replace(/,/g,"\n")
                 })
@@ -185,12 +192,12 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then( () => {
-                    axios.get(`/spec/delete.do?id=${id}`).then(response => {
+                    axios.get(`/spec/delete?id=${id}`).then(response => {
                         this.fetchData (); //刷新列表
                     })
                 })
             },
-			/* ****图片上传相关代码  如页面有图片上传功能放开注释 **** 
+			/* ****图片上传相关代码  如页面有图片上传功能放开注释 ****
             handleAvatarSuccess(res, file) {
                 this.imageUrl = file.response;
             },

@@ -168,14 +168,21 @@
         },
         methods: {
             fetchData() {
-                axios.post(`/para/findPage.do?page=${this.currentPage}&size=${this.size}`, this.searchMap).then(response => {
-                    this.tableData = response.data.rows;
-                    this.total = response.data.total;
+                axios.post(`/para/getParaByPage`,{
+                    page: {
+                        currentPage: this.currentPage,// 当前页
+                        pageSize: this.size,// 每页大小
+                    },
+                    searchMap: this.searchMap
+
+                }).then(response => {
+                    this.tableData =  response.data.result.list;
+                    this.total = response.data.result.page.totalCount;
                 });
             },
             save() {
                 // this.pojo.image= this.imageUrl; //如页面有图片上传功能放开注释
-                axios.post(`/para/${this.pojo.id == null ? 'add' : 'update'}.do`, this.pojo).then(response => {
+                axios.post(`/para/${this.pojo.id == null ? 'add' : 'update'}`, this.pojo).then(response => {
                     this.fetchData(); //刷新列表
                     this.formVisible = false;//关闭窗口
                 });
@@ -183,8 +190,8 @@
             edit(id) {
                 this.formVisible = true // 打开窗口
                 // 调用查询
-                axios.get(`/para/findById.do?id=${id}`).then(response => {
-                    this.pojo = response.data;
+                axios.get(`/para/findParaById?id=${id}`).then(response => {
+                    this.pojo = response.data.result;
                     // this.imageUrl=this.pojo.image //显示图片  如页面有图片上传功能放开注释
                 })
             },
@@ -194,7 +201,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.get(`/para/delete.do?id=${id}`).then(response => {
+                    axios.get(`/para/delete?id=${id}`).then(response => {
                         this.fetchData(); //刷新列表
                     })
                 })

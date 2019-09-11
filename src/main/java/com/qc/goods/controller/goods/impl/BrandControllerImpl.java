@@ -1,10 +1,11 @@
-package com.qc.goods.controller.goods;
+package com.qc.goods.controller.goods.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.qc.common.BaseQueryResult;
 import com.qc.common.PageInfo;
 import com.qc.common.Response;
 import com.qc.contract.goods.req.GetBrandRequest;
+import com.qc.goods.controller.goods.IBrandController;
 import com.qc.pojo.goods.Brand;
 import com.qc.service.IBrandService;
 import org.apache.ibatis.annotations.Param;
@@ -17,47 +18,45 @@ import java.util.List;
  * @date 2019/8/21
  */
 @RestController
-@RequestMapping("brand")
-public class BrandController {
+public class BrandControllerImpl implements IBrandController {
 
     @Reference
     private IBrandService brandService;
 
-    @RequestMapping("getAllBrand")
-    Response<List<Brand>> getAllBrand() {
+    @Override
+    public Response<List<Brand>> getAllBrand() {
         return new Response<>(brandService.getAllBrand());
     }
-
-    @RequestMapping("getAllBrandByPage")
-    Response<BaseQueryResult<Brand>> getAllBrandByPage(PageInfo page) {
+    @Override
+    public Response<BaseQueryResult<Brand>> getAllBrandByPage(PageInfo page) {
         return new Response<>(brandService.getAllBrandByPage(page));
     }
 
-    @PostMapping("getBrandByCondition")
-    Response<BaseQueryResult<Brand>> getBrandByCondition(@RequestBody  GetBrandRequest request) {
+    @Override
+    public Response<BaseQueryResult<Brand>> getBrandByCondition(@RequestBody  GetBrandRequest request) {
         return new Response<>(brandService.getBrandByCondition(request));
     }
 
-    @PostMapping("saveBrand")
-    Response saveBrand(@RequestBody Brand brand) {
+    @Override
+    public Response saveBrand(@RequestBody Brand brand) {
         brandService.saveBrand(brand);
         return new Response();
     }
 
-    @GetMapping("getBrandById")
-    Response<Brand> getBrandById(@Param("id") Integer id) {
+    @Override
+    public Response<Brand> getBrandById(@Param("id") Integer id) {
         Brand brand = brandService.getBrandById(id);
         return new Response<>(brand);
     }
 
-    @PostMapping("updateBrand")
-    Response updateBrand(@RequestBody Brand brand) {
+    @Override
+    public Response updateBrand(@RequestBody Brand brand) {
         brandService.updateBrand(brand);
         return new Response();
     }
 
-    @GetMapping("deleteBrandById")
-    Response deleteBrandById(@Param("id") Integer id) {
+    @Override
+    public Response deleteBrandById(@Param("id") Integer id) {
         brandService.deleteBrandById(id);
         return new Response();
     }
